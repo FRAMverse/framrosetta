@@ -8,12 +8,12 @@
 ## `tocas_fram`
 A data frame with 10,462 rows and 6 columns:
 \describe{
-  \item{fishery_type}{1 = Non-Treaty / 2 = Treaty}
-  \item{gear} {Gear Code}
-  \item{dispostion}{Dispostion - Commerical, Ceremonial Etc...}
+  \item{fisher_type}{1 = Non-Treaty / 2 = Treaty}
+  \item{gear}{Gear Code}
+  \item{dispostion}{Dispostion. "COMM" = Commercial, "C&SF" = Ceremonial and Subsistence fishing, "ORGN" = , "Test" and "TEST" = Test fishery (?), TKHM = ??}
   \item{catch_area}{Catch area code, not zero-padded}
   \item{fishery_id}{FRAM fishery ID}
-  \item{fishery_name} {FRAM fishery name}
+  \item{fishery_name}{FRAM fishery name}
 }
 }
 \source{
