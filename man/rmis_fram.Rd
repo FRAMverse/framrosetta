@@ -9,9 +9,9 @@
 A data frame with 225,390 rows and 4 columns:
 \describe{
   \item{psc_code}{RMIS PSC Recovery Location}
-  \item{gear} {Gear Code}
+  \item{gear}{Gear Code}
   \item{fishery_id}{FRAM fishery ID}
-  \item{fishery_name} {FRAM fishery name}
+  \item{fishery_name}{FRAM fishery name}
 }
 }
 \source{
@@ -21,6 +21,6 @@ A data frame with 225,390 rows and 4 columns:
 rmis_fram
 }
 \description{
-Lookup table for FRAM to RMIS recoveries
+For more about the Regional Mark Information System (RMIS), see https://www.rmpc.org/.
 }
 \keyword{datasets}
