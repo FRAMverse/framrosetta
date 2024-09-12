@@ -144,3 +144,18 @@
 #' }
 #' @source 2024NOF_CohoFRAMdatabase_distribution.mdb
 "timestep_coho_fram"
+
+#' Lookup table for Chinook stock IDs from BkFRAM to normal FRAM
+#'
+#' This table is based on Chinook stock tables from pre-season 2024. Additional stock may
+#' be added in the future (splitting out stock aggregates). The `bk_lookupfun_chin()` function accommodates
+#' this.
+#'
+#' @format
+#' A data frame with 116 rows and 3 columns:
+#' \describe{
+#'   \item{stock_name_bk}{Stock name}
+#'   \item{bk_stock_id }{Stock ID in the BackwardsFRAM table}
+#'   \item{stock_id}{Stock ID anywhere else in FRAM and TAMM}
+#' }
+"bk_lookup_chin"

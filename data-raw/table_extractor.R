@@ -1,5 +1,6 @@
 library(framrsquared)
 library(tidyverse)
+
 cli::cli_alert("Select full Chinook FRAM database to pull tables from")
 path.chin = file.choose()
 file.chin = gsub(".*[\\]", "", path.chin)
@@ -41,7 +42,9 @@ timestep_coho_fram = fetch_table(db, "TimeStep") |>
 comment(timestep_coho_fram) = c(description = paste0("`timestep_coho_fram` is a copy of the TimeStep table from a coho FRAM database (", file.coho, ")."))
 disconnect_fram_db(db)
 
-usethis::use_data(stock_chinook_fram, stock_coho_fram,
+
+usethis::use_data(stock_chinook_fram,
+                  stock_coho_fram,
                   fishery_chinook_fram, fishery_coho_fram,
                   timestep_chinook_fram, timestep_coho_fram, overwrite = TRUE)
 cli::cli_alert("Update @source in data.R documentation! Files used:")
