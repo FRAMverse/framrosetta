@@ -7,11 +7,20 @@
 <!-- badges: end -->
 
 `framrosetta` is a data library of look up tables for translating FRAM
-fisheries, stocks, and areas to other fishery data.
+fisheries, stocks, and areas to other fishery data. `framrosetta` is
+part of the [FRAMverse
+R-Universe](https://framverse.r-universe.dev/packages).
 
 ## Installation
 
-You can install `framrosetta` like so:
+You can install `framrosetta` from R-Universe like so:
+
+``` r
+install.packages("framrosetta", repos = "https://framverse.r-universe.dev")
+```
+
+Otherwise, if you have Rtools and either `{devtools}` or `{pak}`
+installed, you can install `framrosetta` from source code like so:
 
 ``` r
 devtools::install_github("FRAMverse/framrosetta")    
@@ -89,13 +98,13 @@ Translating between Chinook stock IDs and human-readable names.
 knitr::kable(head(stock_chinook_fram, 5))
 ```
 
-| species | stock_version | stock_id | production_region_number | management_unit_number | stock_name  | stock_long_name                |
-|:--------|--------------:|---------:|-------------------------:|-----------------------:|:------------|:-------------------------------|
-| CHINOOK |             5 |        4 |                        1 |                      6 | M-NK Sp Hat | Marked Nooksack Spr Hatchery   |
-| CHINOOK |             5 |        6 |                        1 |                     10 | M-NK Sp Nat | Marked Nooksack Spr Natural    |
-| CHINOOK |             5 |        8 |                        2 |                      2 | M-Skag FF   | Marked Skagit Summer/Fall Fing |
-| CHINOOK |             5 |       10 |                        2 |                      6 | M-SkagFYr   | Marked Skagit Summer/Fall Year |
-| CHINOOK |             5 |       12 |                        2 |                     10 | M-SkagSpY   | Marked Skagit Spring Year      |
+| species | stock_version | stock_id | production_region_number | management_unit_number | stock_name | stock_long_name |
+|:---|---:|---:|---:|---:|:---|:---|
+| CHINOOK | 5 | 4 | 1 | 6 | M-NK Sp Hat | Marked Nooksack Spr Hatchery |
+| CHINOOK | 5 | 6 | 1 | 10 | M-NK Sp Nat | Marked Nooksack Spr Natural |
+| CHINOOK | 5 | 8 | 2 | 2 | M-Skag FF | Marked Skagit Summer/Fall Fing |
+| CHINOOK | 5 | 10 | 2 | 6 | M-SkagFYr | Marked Skagit Summer/Fall Year |
+| CHINOOK | 5 | 12 | 2 | 10 | M-SkagSpY | Marked Skagit Spring Year |
 
 ### `stock_coho_fram`
 
@@ -105,13 +114,13 @@ Translating between Coho stock IDs and human-readable names.
 knitr::kable(head(stock_coho_fram, 5))
 ```
 
-| species | stock_version | stock_id | production_region_number | management_unit_number | stock_name | stock_long_name                 |
-|:--------|--------------:|---------:|-------------------------:|-----------------------:|:-----------|:--------------------------------|
-| COHO    |             1 |        1 |                        1 |                      1 | U-nkskrw   | Nooksack River Wild UnMarked    |
-| COHO    |             1 |        2 |                        1 |                      2 | M-nkskrw   | Nooksack River Wild Marked      |
-| COHO    |             1 |        3 |                        1 |                      3 | U-kendlh   | Kendall Creek Hatchery UnMarked |
-| COHO    |             1 |        4 |                        1 |                      4 | M-kendlh   | Kendall Creek Hatchery Marked   |
-| COHO    |             1 |        5 |                        1 |                      5 | U-skokmh   | Skookum Creek Hatchery UnMarked |
+| species | stock_version | stock_id | production_region_number | management_unit_number | stock_name | stock_long_name |
+|:---|---:|---:|---:|---:|:---|:---|
+| COHO | 1 | 1 | 1 | 1 | U-nkskrw | Nooksack River Wild UnMarked |
+| COHO | 1 | 2 | 1 | 2 | M-nkskrw | Nooksack River Wild Marked |
+| COHO | 1 | 3 | 1 | 3 | U-kendlh | Kendall Creek Hatchery UnMarked |
+| COHO | 1 | 4 | 1 | 4 | M-kendlh | Kendall Creek Hatchery Marked |
+| COHO | 1 | 5 | 1 | 5 | U-skokmh | Skookum Creek Hatchery UnMarked |
 
 ### `fishery_chinook_fram`
 
