@@ -14,7 +14,8 @@ if(db$fram_db_species == "COHO"){
 }
 stock_chinook_fram = fetch_table(db, "Stock")
 comment(stock_chinook_fram) = c(description = paste0("`stock_chinook_fram` is a copy of the Stock table from a Chinook FRAM database (", file.chin, "), and can be used to map stock ID numbers to stock or vice versa. Note that TAMM and FRAM have slightly different stock ID numbers."))
-fishery_chinook_fram = fetch_table(db, "Fishery")
+fishery_chinook_fram = fetch_table(db, "Fishery") |>
+  filter(species == "CHINOOK")
 comment(fishery_chinook_fram) = c(description = paste0("`fishery_chinook_fram` is a copy of the Fishery table from a Chinook FRAM database (", file.chin, "), and can be used to map fishery ID numbers to fisheries or vice versa. Note that TAMM and FRAM have slightly different fishery ID numbers."))
 timestep_chinook_fram = fetch_table(db, "TimeStep") |>
   filter(species == "CHINOOK")
