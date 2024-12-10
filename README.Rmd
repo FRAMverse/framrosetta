@@ -18,12 +18,19 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-`framrosetta` is a data library of look up tables for translating FRAM fisheries, stocks, and areas to other fishery data.
+`framrosetta` is a data library of look up tables for translating FRAM fisheries, stocks, and areas to other fishery data. `framrosetta` is part of the [FRAMverse R-Universe](https://framverse.r-universe.dev/packages).
 
 
 ## Installation
 
-You can install `framrosetta` like so:
+You can install `framrosetta` from R-Universe like so:
+
+```r
+install.packages("framrosetta", repos = "https://framverse.r-universe.dev")
+```
+
+Otherwise, if you have Rtools and either `{devtools}` or `{pak}` installed, you can
+install `framrosetta` from source code like so:
 
 ```r
 devtools::install_github("FRAMverse/framrosetta")    
