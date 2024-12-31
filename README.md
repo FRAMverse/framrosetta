@@ -36,6 +36,47 @@ pak::pkg_install("FRAMverse/framrosetta")
 library(framrosetta)
 ```
 
+## Key functions
+
+`framrosetta` includes two functions to streamline mapping between
+fishery and stock IDs and names. `fishery_search` takes either a fishery
+ID number or a partial name and returns a tibble summarizing all
+fisheries that match; `stock_search` does the same for stocks. In both
+cases, the `species` argument must be provided to determine if the
+function should return the relevant `"CHINOOK"` or `"COHO"` fisheries /
+stocks. The `pattern` argument can take regular expressions, and is case
+insensitive.
+
+``` r
+fishery_search("kmz", "COHO")
+#>   species version_number fishery_id fishery_name fishery_title
+#> 5    COHO              1          5   Ca KMZ Spt     KMZ Sport
+#> 6    COHO              1          6   Ca KMZ Trl     KMZ Troll
+fishery_search(50, "COHO")
+#>    species version_number fishery_id fishery_name            fishery_title
+#> 50    COHO              1         50   GryHbr Net Grays Harbor Estuary Net
+stock_search("nooksack", "CHINOOK")
+#>    species stock_version stock_id production_region_number
+#> 1  CHINOOK             5        4                        1
+#> 2  CHINOOK             5        6                        1
+#> 38 CHINOOK             5        2                        1
+#> 40 CHINOOK             5        3                        1
+#> 41 CHINOOK             5        5                        1
+#> 77 CHINOOK             5        1                        1
+#>    management_unit_number  stock_name                stock_long_name
+#> 1                       6 M-NK Sp Hat   Marked Nooksack Spr Hatchery
+#> 2                      10 M-NK Sp Nat    Marked Nooksack Spr Natural
+#> 38                      2   M-NkSm FF    Marked Nooksack/Samish Fall
+#> 40                      5 U-NK SP Nat  UnMarked Nooksack Spr Natural
+#> 41                      9 U-NK Sp Hat UnMarked Nooksack Spr Hatchery
+#> 77                      1   U-NkSm FF  UnMarked Nooksack/Samish Fall
+stock_search(21, "CHINOOK")
+#>    species stock_version stock_id production_region_number
+#> 49 CHINOOK             5       21                        4
+#>    management_unit_number stock_name           stock_long_name
+#> 49                      1  U-MidPSFF UnMarked Mid PS Fall Fing
+```
+
 ## Table summaries
 
 `framrosetta` contains the following tables for translating FRAM

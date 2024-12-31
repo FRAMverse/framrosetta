@@ -46,6 +46,19 @@ pak::pkg_install("FRAMverse/framrosetta")
 library(framrosetta)
 ```
 
+## Key functions
+
+`framrosetta` includes two functions to streamline mapping between fishery and stock IDs and names. `fishery_search` takes either a fishery ID number or a partial name and returns a tibble summarizing all fisheries that match; `stock_search` does the same for stocks. In both cases, the `species` argument must be provided to determine if the function should return the relevant `"CHINOOK"` or `"COHO"` fisheries / stocks. The `pattern` argument can take regular expressions, and is case insensitive. 
+
+
+```{r}
+fishery_search("kmz", "COHO")
+fishery_search(50, "COHO")
+stock_search("nooksack", "CHINOOK")
+stock_search(21, "CHINOOK")
+```
+
+
 ## Table summaries
 
 `framrosetta` contains the following tables for translating FRAM fisheries, stocks, and areas to other fishery data or human readable formats:
