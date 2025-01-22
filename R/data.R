@@ -76,6 +76,21 @@
 #' @source 2024NOF_CohoFRAMdatabase_distribution.mdb
 "fishery_coho_fram"
 
+#' Coho fishery information (PSC)
+#'
+#' Mapping of FRAM fishery_id to PSC fishery ID and name for Coho salmon, based on the AnnualReport R package.
+#' @format A data frame with 197 rows and 5 columns:
+#' \describe{
+#'   \item{species}{Species name}
+#'   \item{fram_fishery_id}{Fishery ID in FRAM}
+#'   \item{psc_fishery_id}{Corresponding ID for the psc fishery}
+#'   \item{psc_group_code}{}
+#'   \item{psc_fishery_name}{Name of PSC fishery ID for the psc fishery}
+#'   \item{psc_fishery_order}{}
+#' }
+#' @source https://github.com/PSC-CoTC/AnnualReport
+"fishery_coho_psc"
+
 #' Chinook stock information
 #'
 #' Mapping of stock_id to stock name for Chinook salmon, taken from the `Stock` table of
@@ -96,7 +111,7 @@
 
 #' Coho stock information
 #'
-#' Mapping of stock_id to stock name for Coho salmon, taken from the `Stock` table of
+#' Mapping of FRAM stock_id to FRAM stock name for Coho salmon, taken from the `Stock` table of
 #' the Coho FRAM database.
 #'
 #' @format A data frame with 78 rows and 7 columns:
@@ -111,6 +126,20 @@
 #' }
 #' @source 2024NOF_CohoFRAMdatabase_distribution.mdb
 "stock_coho_fram"
+
+#' Coho stock information (PSC)
+#'
+#' Mapping of FRAM stock_id to PSC stock id and psc stock names, based on the AnnualReport R package.
+#'
+#' @format A data frame with 41 rows and 4 columns:
+#' \describe{
+#'   \item{species}{Species name}
+#'   \item{fram_stock_id}{Coho stock id number in FRAM}
+#'   \item{psc_stock_id}{Corresponding PSC stock ID}
+#'   \item{psc_stock_name}{PSC stock name}
+#' }
+#' @source https://github.com/PSC-CoTC/AnnualReport
+"stock_coho_psc"
 
 
 #' Chinook timestep information stock information
