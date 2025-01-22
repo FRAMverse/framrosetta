@@ -1,0 +1,148 @@
+---
+title: "overview"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{overview}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(framrosetta)
+```
+
+`framrosetta` was developed to store the various lookup tables/mappings necessary to work with [FRAM](https://framverse.github.io/fram_doc/) data, or to link other data (TOCAS, WAFT, PSC stock and fishery identities) to FRAM tables or vice versa. Most tables in FRAM identify stock and fisheries by id numbers, but we often want to present figures or analyses using names (or we need to filter to a specific fishery or stock of interest, and we have the name but not the id). 
+
+## Key functions:
+
+To identify a stock or fishery from an ID number, or to find the stock or fishery ID based on the name, `framrosetta` includes two search functions. `fishery_search` takes either a fishery ID number or a full or partial name and returns a tibble summarizing all fisheries that match; `stock_search` does the same for stocks. In both cases, the `species` argument must be provided to determine if the function should return the relevant `"CHINOOK"` or `"COHO"` fisheries / stocks. The `pattern` argument can take regular expressions, and is case insensitive. 
+
+
+```{r}
+## Figure out the coho fishery ids for the kmz fisheries
+fishery_search("kmz", "COHO")
+## Figure out which Coho fishery has id 50
+fishery_search(50, "COHO")
+## Find all the Chinook noocksack stocks
+stock_search("nooksack", "CHINOOK")
+## Figure out which Chinook stock has id 21
+stock_search(21, "CHINOOK")
+```
+
+
+## Table summaries
+
+`framrosetta` contains the following tables for translating FRAM fisheries, stocks, and areas to other fishery data or human readable formats:
+
+
+### `rmis_fram`
+
+Translating between FRAM and RMIS.
+
+```{r, results = 'asis'}
+knitr::kable(head(rmis_fram, 5))
+```
+
+### `tocas_fram`
+
+Translating between FRAM and TOCAS.
+
+```{r, results = 'asis'}
+knitr::kable(head(tocas_fram, 5))
+```
+
+### `waft_fram`
+
+Translating between WAFT and FRAM.
+
+```{r, results = 'asis'}
+knitr::kable(head(waft_fram, 5))
+```
+
+
+### `stock_chinook_fram`
+
+Translating between Chinook stock IDs and human-readable names.
+
+```{r, results = 'asis'}
+knitr::kable(head(stock_chinook_fram, 5))
+```
+
+### `stock_coho_fram`
+
+Translating between Coho stock IDs and human-readable names.
+
+```{r, results = 'asis'}
+knitr::kable(head(stock_coho_fram, 5))
+```
+
+### `stock_coho_psc`
+
+Translating between Coho FRAM stock IDs and PSC IDs and names.
+
+```{r, results = 'asis'}
+knitr::kable(head(stock_coho_psc, 5))
+```
+
+### `fishery_chinook_fram`
+
+Translating between Chinook fishery IDs and human-readable names.
+
+```{r, results = 'asis'}
+knitr::kable(head(fishery_chinook_fram, 5))
+```
+
+### `fishery_coho_fram`
+
+Translating between Coho fishery IDs and human-readable names.
+
+
+```{r, results = 'asis'}
+knitr::kable(head(fishery_coho_fram, 5))
+```
+
+### `fishery_coho_psc`
+
+Translating between Coho FRAM fishery IDs and PSC IDs and names.
+
+
+```{r, results = 'asis'}
+knitr::kable(head(fishery_coho_psc, 5))
+```
+
+
+### `timestep_chinook_fram`
+
+Translating between Chinook time-step IDs and human-readable names.
+
+```{r, results = 'asis'}
+knitr::kable(head(timestep_chinook_fram, 5))
+```
+
+
+### `timestep_coho_fram`
+
+Translating between Coho time-step IDs and human-readable names.
+
+
+```{r, results = 'asis'}
+knitr::kable(head(timestep_coho_fram, 5))
+```
+
+
+### `bk_lookup_chin` 
+
+For Chinook only, the backwards FRAM algorithm uses a separate stock ID system that is hard-coded into FRAM. The underlying idea is that normally FRAM tracks two versions of each stock (marked and unmarked), or occasionally four versions of each stock (marked and unmarked). For part of backwards fram for Chinook, the algorithm separately handles the total number of fish across these versions of stock *and* the allocation of those fish into the two (or four) stocks. To do so, the algorithm creates a new stock id numbering system, with an additional "sum" stock for each of the pairs (or sets of four) marked/unmarked or marked/unmarked x hatch/natural stocks. 
+
+Unfortunately, this means that the BackwardFRAM table in any Chinook database has a `StockID` that does *not* match the `StockID` column in any of the other tables. `framrosetta::bk_lookup_chin` maps between the stock ids in the BackwardsFRAM table (`$bk_stock_id`) and the stock ids everywhere else (`$stock_id`). 
+
+```{r, results = 'asis'}
+knitr::kable(head(bk_lookupfun_chin, 5))
+```
