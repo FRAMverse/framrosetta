@@ -23,3 +23,7 @@ Imports:
     dplyr,
     rlang
 URL: https://framverse.github.io/framrosetta/
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
