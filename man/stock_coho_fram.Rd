@@ -23,7 +23,7 @@ A data frame with 78 rows and 7 columns:
 stock_coho_fram
 }
 \description{
-Mapping of stock_id to stock name for Coho salmon, taken from the `Stock` table of
+Mapping of FRAM stock_id to FRAM stock name for Coho salmon, taken from the `Stock` table of
 the Coho FRAM database.
 }
 \keyword{datasets}
