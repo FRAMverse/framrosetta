@@ -1,7 +1,7 @@
 Package: framrosetta
 Type: Package
 Title: FRAM LUTs and mappings
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: c(
     person("Ty", "Garber",
            email = "tyler.garber@dfw.wa.gov", 
