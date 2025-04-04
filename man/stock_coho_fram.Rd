@@ -14,6 +14,8 @@ A data frame with 78 rows and 7 columns:
   \item{management_unit_number}{}
   \item{stock_name}{Coho stock name in FRAM}
   \item{stock_long_name}{`stock_name` but more human readable}
+  \item{limiting_stock_name}{Identifier for which of the limiting stock names of the Coho TAMM (sheet `2`) this stock contributes to, if any.}
+  #'   \item{limiting_stock_name_tamm}{As `limiting_stock_name`, but exact match to name in TAMM.}
 }
 }
 \source{

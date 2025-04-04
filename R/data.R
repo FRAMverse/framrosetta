@@ -123,6 +123,8 @@
 #'   \item{management_unit_number}{}
 #'   \item{stock_name}{Coho stock name in FRAM}
 #'   \item{stock_long_name}{`stock_name` but more human readable}
+#'   \item{limiting_stock_name}{Identifier for which of the limiting stock names of the Coho TAMM (sheet `2`) this stock contributes to, if any.}
+#'   #'   \item{limiting_stock_name_tamm}{As `limiting_stock_name`, but exact match to name in TAMM.}
 #' }
 #' @source 2024NOF_CohoFRAMdatabase_distribution.mdb
 "stock_coho_fram"
@@ -141,6 +143,18 @@
 #' @source https://github.com/PSC-CoTC/AnnualReport
 "stock_coho_psc"
 
+#' Coho limiting stock
+#'
+#' Maps between the limiting stock of the Coho TAMM (e.g., 'Hood Canal Wild') and FRAM stock ids. Useful for summarizing impacts on stocks of concern.
+#'
+#' @format A tibble with 10 rows and 2 columns:
+#' \describe{
+#'   \item{name}{Name of the limiting stock}
+#'   \item{name_tamm}{Exact match of limiting stock name in the TAMM}
+#'   \item{stock_id_vec}{a list of numeric vectors, each containing all fram stock_id values for that TAMM limiting stock}
+#' }
+#' #' @source 2024 Pre-Season Chinook DB.mdb
+"limiting_stock_coho"
 
 #' Chinook timestep information stock information
 #'
@@ -187,4 +201,5 @@
 #'   \item{bk_stock_id }{Stock ID in the BackwardsFRAM table}
 #'   \item{stock_id}{Stock ID anywhere else in FRAM and TAMM}
 #' }
+#' @source 2024 Pre-Season Chinook DB.mdb
 "bk_lookup_chin"
