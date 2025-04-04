@@ -12,7 +12,7 @@ stock_search(pattern, species)
 \arguments{
 \item{pattern}{Character string of pattern to search for, case insensitive. If numeric instead, function will return the row with the corresponding stock or fishery ID.}
 
-\item{species}{"CHINOOK" or "COHO}
+\item{species}{"CHINOOK" or "COHO" (or lowercase permutations)}
 }
 \description{
 Search through fishery and stock lookup tables.

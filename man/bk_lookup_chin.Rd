@@ -12,6 +12,9 @@ A data frame with 116 rows and 3 columns:
   \item{stock_id}{Stock ID anywhere else in FRAM and TAMM}
 }
 }
+\source{
+2024 Pre-Season Chinook DB.mdb
+}
 \usage{
 bk_lookup_chin
 }
