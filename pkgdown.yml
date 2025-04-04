@@ -3,7 +3,7 @@ pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
   framrosetta: framrosetta.html
-last_built: 2025-04-04T17:31Z
+last_built: 2025-04-04T18:46Z
 urls:
   reference: https://framverse.github.io/framrosetta/reference
   article: https://framverse.github.io/framrosetta/articles
