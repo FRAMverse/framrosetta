@@ -11,7 +11,7 @@
 #' stock_search("nooksack", "CHINOOK")
 #' stock_search(21, "CHINOOK")
 fishery_search <- function(pattern, species) {
-  species = clean_species(species)
+  species = standardize_species(species)
 
   if(!(is.character(pattern) | is.numeric(pattern))){
     cli::cli_abort("`pattearn` must be either a character vector (to search for fishery by name) or a numeric (to search for fishery by ID number).")
@@ -36,7 +36,7 @@ fishery_search <- function(pattern, species) {
 #' @rdname fishery_search
 #' @export
 stock_search <- function(pattern, species) {
-  species = clean_species(species)
+  species = standardize_species(species)
 
   if(!(is.character(pattern) | is.numeric(pattern))){
     cli::cli_abort("`pattern` must be either a character vector (to search for stock by name) or a numeric (to search for stock by ID number).")

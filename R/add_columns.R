@@ -31,7 +31,7 @@ label_fisheries <- function(.data, species = NULL, fisheries_col = "fishery_id")
       cli::cli_abort('Table metadata missing and `species` argument missing.')
     }
   }
-  species <-  clean_species(species)
+  species <-  standardize_species(species)
 
   ## check if fisheries_col has legal entries given species
   if(species == "CHINOOK"){
@@ -106,7 +106,7 @@ label_stocks <- function(.data, species = NULL, stocks_col = "stock_id"){
       cli::cli_abort('Table metadata missing and `species` argument missing.')
     }
   }
-  species <-  clean_species(species)
+  species <-  standardize_species(species)
 
   ## check if fisheries_col has legal entries given species
   if(species == "CHINOOK"){

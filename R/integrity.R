@@ -1,26 +1,22 @@
-#' Clean variations on function names
+#' Allow multiple species identifiers
 #'
-#' Takes a character string with putative species name corresponding to "CHINOOK" or "COHO" and returns exactly "CHINOOK" or "COHO".
-#' Works by matching against predefined variations (different capitalizations, "chin" instead of "chinook"). Returns informative error if
-#' species name does not match any of these variations. Intended for internal use, to streamline allowing variations of species in arguments.
+#' framrsquared functions are written around fram database species labels, "COHO" and "CHINOOK". This function translates alternate designations (lowercase, "chin" for "chinook") into those two forms.
 #'
-#' @param species character atomic
-#' @param call argument to ensure error messages correctly point to the calling function rather than this one.
+#' @param species Character atomic, either "COHO", "CHIN", or "CHINOOK", with any capitalization
 #'
-#' @return either "COHO" or "CHINOOK"
-clean_species <- function(species, call = rlang::caller_env()){
-  species_vec <- c("CHINOOK", "CHIN", "Chin", "Chinook", "chinook", "chin",
-                   "COHO", "Coho", "coho")
-  rlang::arg_match(arg = species,
-                   values = species_vec,
-                   error_call = call)
-  if(species %in% c("CHINOOK", "CHIN", "Chin", "Chinook", "chinook", "chin")){
-    species_clean = "CHINOOK"
+#' @return Character atomic, either "COHO" or "CHINOOK"
+#' @keywords internal
+standardize_species <- function(species){
+  species = toupper(species)
+  coho_names = c("COHO")
+  chinook_names = c("CHINOOK", "CHIN")
+  species <- rlang::arg_match(species, c(coho_names, chinook_names))
+  if(species %in% coho_names){
+    species = "COHO"
+  } else if(species %in% chinook_names){
+    species = "CHINOOK"
   }
-  if (species %in% c("COHO", "Coho", "coho")) {
-    species_clean = "COHO"
-  }
-  return(species_clean)
+  return(species)
 }
 
 
