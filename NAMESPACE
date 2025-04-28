@@ -2,4 +2,6 @@
 
 export(bk_lookupfun_chin)
 export(fishery_search)
+export(label_fisheries)
+export(label_stocks)
 export(stock_search)

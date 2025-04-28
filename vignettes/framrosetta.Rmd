@@ -16,11 +16,39 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(framrosetta)
+library(dplyr)
 ```
 
 `framrosetta` was developed to store the various lookup tables/mappings necessary to work with [FRAM](https://framverse.github.io/fram_doc/) data, or to link other data (TOCAS, WAFT, PSC stock and fishery identities) to FRAM tables or vice versa. Most tables in FRAM identify stock and fisheries by id numbers, but we often want to present figures or analyses using names (or we need to filter to a specific fishery or stock of interest, and we have the name but not the id). 
 
 ## Key functions:
+
+### Adding stock or fishery label
+
+Frequently we work with tables that use stock id or fishery id to identify stocks or fisheries; while useful for programming, id numbers are not the easiest to read. `label_stocks()` and `label_fisheries()` use `stock_id` and `fishery_id` to add human-readable stock and fishery names. These functions are flexible (can manually specify the species or ), but the simplest use-case is to label tables pulled from a fram database with the `framrosetta` package, which works with default arguments. Here is an example, using an artificial dataframe because we cannot use `framrsquared::fetch_table()` in vignettes.
+
+```{r}
+## create example data with random coho stock id, fishery ids, and landed catch
+## We use 
+dat = stock_coho_fram[sample(1:nrow(stock_coho_fram), size = 5),] |> 
+  dplyr::select(stock_id) |> 
+  mutate(fishery_id = sample(1:200, size = length(stock_id), replace = TRUE),
+           landed_catch = runif(length(stock_id), min = 1, max = 1000))
+# This makes a dataframe that could reasonably be output from framrsquared functions
+dat
+## Not very human readable
+## make the stock_id human readable
+dat |> 
+  label_stocks()
+
+## make both stock_id and fishery_id human readable
+dat |> 
+  label_stocks() |> 
+  label_fisheries()
+```
+
+
+### Searching for stock or fishery
 
 To identify a stock or fishery from an ID number, or to find the stock or fishery ID based on the name, `framrosetta` includes two search functions. `fishery_search` takes either a fishery ID number or a full or partial name and returns a tibble summarizing all fisheries that match; `stock_search` does the same for stocks. In both cases, the `species` argument must be provided to determine if the function should return the relevant `"CHINOOK"` or `"COHO"` fisheries / stocks. The `pattern` argument can take regular expressions, and is case insensitive. 
 
