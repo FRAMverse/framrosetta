@@ -60,7 +60,16 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://framverse.github.io/framrosetta/">framrosetta</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://framverse.github.io/framrosetta/">framrosetta</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     filter, lag</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span></code></pre></div>
 <p><code>framrosetta</code> was developed to store the various lookup
 tables/mappings necessary to work with <a href="https://framverse.github.io/fram_doc/" class="external-link">FRAM</a> data, or to link
 other data (TOCAS, WAFT, PSC stock and fishery identities) to FRAM
@@ -71,6 +80,65 @@ and we have the name but not the id).</p>
 <div class="section level2">
 <h2 id="key-functions">Key functions:<a class="anchor" aria-label="anchor" href="#key-functions"></a>
 </h2>
+<div class="section level3">
+<h3 id="adding-stock-or-fishery-label">Adding stock or fishery label<a class="anchor" aria-label="anchor" href="#adding-stock-or-fishery-label"></a>
+</h3>
+<p>Frequently we work with tables that use stock id or fishery id to
+identify stocks or fisheries; while useful for programming, id numbers
+are not the easiest to read. <code><a href="../reference/label_stocks.html">label_stocks()</a></code> and
+<code><a href="../reference/label_fisheries.html">label_fisheries()</a></code> use <code>stock_id</code> and
+<code>fishery_id</code> to add human-readable stock and fishery names.
+These functions are flexible (can manually specify the species or ), but
+the simplest use-case is to label tables pulled from a fram database
+with the <code>framrosetta</code> package, which works with default
+arguments. Here is an example, using an artificial dataframe because we
+cannot use <code>framrsquared::fetch_table()</code> in vignettes.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## create example data with random coho stock id, fishery ids, and landed catch</span></span>
+<span><span class="co">## We use </span></span>
+<span><span class="va">dat</span> <span class="op">=</span> <span class="va">stock_coho_fram</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">stock_coho_fram</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>,<span class="op">]</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">stock_id</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>fishery_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">200</span>, size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">stock_id</span><span class="op">)</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>           landed_catch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">stock_id</span><span class="op">)</span>, min <span class="op">=</span> <span class="fl">1</span>, max <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># This makes a dataframe that could reasonably be output from framrsquared functions</span></span>
+<span><span class="va">dat</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 3</span></span></span>
+<span><span class="co">#&gt;   stock_id fishery_id landed_catch</span></span>
+<span><span class="co">#&gt;      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>      173        102        875. </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>      151        111        176. </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>      204         47         35.2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>       63        159        321. </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>      229        196        403.</span></span>
+<span><span class="co">## Not very human readable</span></span>
+<span><span class="co">## make the stock_id human readable</span></span>
+<span><span class="va">dat</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="../reference/label_stocks.html">label_stocks</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 4</span></span></span>
+<span><span class="co">#&gt;   stock_id stock_label                          fishery_id landed_catch</span></span>
+<span><span class="co">#&gt;      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>      173 Wash Late Wild UnMarked                     102        875. </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>      151 Chehalis River Hatchery UnMarked            111        176. </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>      204 California Central Coast Wild Marked         47         35.2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>       63 Deschutes River (WA) Wild UnMarked          159        321. </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>      229 Upper Fraser River Hatchery UnMarked        196        403.</span></span>
+<span></span>
+<span><span class="co">## make both stock_id and fishery_id human readable</span></span>
+<span><span class="va">dat</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="../reference/label_stocks.html">label_stocks</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="../reference/label_fisheries.html">label_fisheries</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 5</span></span></span>
+<span><span class="co">#&gt;   stock_id stock_label                     fishery_id fishery_label landed_catch</span></span>
+<span><span class="co">#&gt;      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>      173 Wash Late Wild UnMarked                102 WA Area 8 Tr…        875. </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>      151 Chehalis River Hatchery UnMark…        111 WA Area 8D N…        176. </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>      204 California Central Coast Wild …         47 Willapa Bay …         35.2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>       63 Deschutes River (WA) Wild UnMa…        159 Area 12C-12D…        321. </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>      229 Upper Fraser River Hatchery Un…        196 SEAK Northwe…        403.</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="searching-for-stock-or-fishery">Searching for stock or fishery<a class="anchor" aria-label="anchor" href="#searching-for-stock-or-fishery"></a>
+</h3>
 <p>To identify a stock or fishery from an ID number, or to find the
 stock or fishery ID based on the name, <code>framrosetta</code> includes
 two search functions. <code>fishery_search</code> takes either a fishery
@@ -81,38 +149,40 @@ provided to determine if the function should return the relevant
 <code>"CHINOOK"</code> or <code>"COHO"</code> fisheries / stocks. The
 <code>pattern</code> argument can take regular expressions, and is case
 insensitive.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Figure out the coho fishery ids for the kmz fisheries</span></span>
 <span><span class="fu"><a href="../reference/fishery_search.html">fishery_search</a></span><span class="op">(</span><span class="st">"kmz"</span>, <span class="st">"COHO"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 5</span></span></span>
 <span><span class="co">#&gt;   species version_number fishery_id fishery_name fishery_title</span></span>
-<span><span class="co">#&gt; 5    COHO              1          5   Ca KMZ Spt     KMZ Sport</span></span>
-<span><span class="co">#&gt; 6    COHO              1          6   Ca KMZ Trl     KMZ Troll</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> COHO                 1          5 Ca KMZ Spt   KMZ Sport    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> COHO                 1          6 Ca KMZ Trl   KMZ Troll</span></span>
 <span><span class="co">## Figure out which Coho fishery has id 50</span></span>
 <span><span class="fu"><a href="../reference/fishery_search.html">fishery_search</a></span><span class="op">(</span><span class="fl">50</span>, <span class="st">"COHO"</span><span class="op">)</span></span>
-<span><span class="co">#&gt;    species version_number fishery_id fishery_name            fishery_title</span></span>
-<span><span class="co">#&gt; 50    COHO              1         50   GryHbr Net Grays Harbor Estuary Net</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 5</span></span></span>
+<span><span class="co">#&gt;   species version_number fishery_id fishery_name fishery_title           </span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> COHO                 1         50 GryHbr Net   Grays Harbor Estuary Net</span></span>
 <span><span class="co">## Find all the Chinook noocksack stocks</span></span>
 <span><span class="fu"><a href="../reference/fishery_search.html">stock_search</a></span><span class="op">(</span><span class="st">"nooksack"</span>, <span class="st">"CHINOOK"</span><span class="op">)</span></span>
-<span><span class="co">#&gt;    species stock_version stock_id production_region_number</span></span>
-<span><span class="co">#&gt; 1  CHINOOK             5        4                        1</span></span>
-<span><span class="co">#&gt; 2  CHINOOK             5        6                        1</span></span>
-<span><span class="co">#&gt; 38 CHINOOK             5        2                        1</span></span>
-<span><span class="co">#&gt; 40 CHINOOK             5        3                        1</span></span>
-<span><span class="co">#&gt; 41 CHINOOK             5        5                        1</span></span>
-<span><span class="co">#&gt; 77 CHINOOK             5        1                        1</span></span>
-<span><span class="co">#&gt;    management_unit_number  stock_name                stock_long_name</span></span>
-<span><span class="co">#&gt; 1                       6 M-NK Sp Hat   Marked Nooksack Spr Hatchery</span></span>
-<span><span class="co">#&gt; 2                      10 M-NK Sp Nat    Marked Nooksack Spr Natural</span></span>
-<span><span class="co">#&gt; 38                      2   M-NkSm FF    Marked Nooksack/Samish Fall</span></span>
-<span><span class="co">#&gt; 40                      5 U-NK SP Nat  UnMarked Nooksack Spr Natural</span></span>
-<span><span class="co">#&gt; 41                      9 U-NK Sp Hat UnMarked Nooksack Spr Hatchery</span></span>
-<span><span class="co">#&gt; 77                      1   U-NkSm FF  UnMarked Nooksack/Samish Fall</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 7</span></span></span>
+<span><span class="co">#&gt;   species stock_version stock_id production_region_number management_unit_number</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> CHINOOK             5        4                        1                      6</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> CHINOOK             5        6                        1                     10</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> CHINOOK             5        2                        1                      2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> CHINOOK             5        3                        1                      5</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> CHINOOK             5        5                        1                      9</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> CHINOOK             5        1                        1                      1</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 2 more variables: stock_name &lt;chr&gt;, stock_long_name &lt;chr&gt;</span></span></span>
 <span><span class="co">## Figure out which Chinook stock has id 21</span></span>
 <span><span class="fu"><a href="../reference/fishery_search.html">stock_search</a></span><span class="op">(</span><span class="fl">21</span>, <span class="st">"CHINOOK"</span><span class="op">)</span></span>
-<span><span class="co">#&gt;    species stock_version stock_id production_region_number</span></span>
-<span><span class="co">#&gt; 49 CHINOOK             5       21                        4</span></span>
-<span><span class="co">#&gt;    management_unit_number stock_name           stock_long_name</span></span>
-<span><span class="co">#&gt; 49                      1  U-MidPSFF UnMarked Mid PS Fall Fing</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 7</span></span></span>
+<span><span class="co">#&gt;   species stock_version stock_id production_region_number management_unit_number</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> CHINOOK             5       21                        4                      1</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 2 more variables: stock_name &lt;chr&gt;, stock_long_name &lt;chr&gt;</span></span></span></code></pre></div>
+</div>
 </div>
 <div class="section level2">
 <h2 id="table-summaries">Table summaries<a class="anchor" aria-label="anchor" href="#table-summaries"></a>
@@ -125,7 +195,7 @@ human readable formats:</p>
 <code>rmis_fram</code><a class="anchor" aria-label="anchor" href="#rmis_fram"></a>
 </h3>
 <p>Translating between FRAM and RMIS.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">rmis_fram</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
@@ -173,7 +243,7 @@ human readable formats:</p>
 <code>tocas_fram</code><a class="anchor" aria-label="anchor" href="#tocas_fram"></a>
 </h3>
 <p>Translating between FRAM and TOCAS.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tocas_fram</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
@@ -233,7 +303,7 @@ human readable formats:</p>
 <code>waft_fram</code><a class="anchor" aria-label="anchor" href="#waft_fram"></a>
 </h3>
 <p>Translating between WAFT and FRAM.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">waft_fram</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
@@ -293,7 +363,7 @@ human readable formats:</p>
 <code>stock_chinook_fram</code><a class="anchor" aria-label="anchor" href="#stock_chinook_fram"></a>
 </h3>
 <p>Translating between Chinook stock IDs and human-readable names.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">stock_chinook_fram</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
@@ -368,7 +438,7 @@ human readable formats:</p>
 <code>stock_coho_fram</code><a class="anchor" aria-label="anchor" href="#stock_coho_fram"></a>
 </h3>
 <p>Translating between Coho stock IDs and human-readable names.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">stock_coho_fram</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
@@ -457,7 +527,7 @@ human readable formats:</p>
 <code>stock_coho_psc</code><a class="anchor" aria-label="anchor" href="#stock_coho_psc"></a>
 </h3>
 <p>Translating between Coho FRAM stock IDs and PSC IDs and names.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">stock_coho_psc</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
@@ -505,7 +575,7 @@ human readable formats:</p>
 <code>fishery_chinook_fram</code><a class="anchor" aria-label="anchor" href="#fishery_chinook_fram"></a>
 </h3>
 <p>Translating between Chinook fishery IDs and human-readable names.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fishery_chinook_fram</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
@@ -559,7 +629,7 @@ human readable formats:</p>
 <code>fishery_coho_fram</code><a class="anchor" aria-label="anchor" href="#fishery_coho_fram"></a>
 </h3>
 <p>Translating between Coho fishery IDs and human-readable names.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fishery_coho_fram</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
@@ -620,7 +690,7 @@ human readable formats:</p>
 <code>fishery_coho_psc</code><a class="anchor" aria-label="anchor" href="#fishery_coho_psc"></a>
 </h3>
 <p>Translating between Coho FRAM fishery IDs and PSC IDs and names.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fishery_coho_psc</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
@@ -689,7 +759,7 @@ human readable formats:</p>
 </h3>
 <p>Translating between Chinook time-step IDs and human-readable
 names.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">timestep_chinook_fram</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
@@ -743,7 +813,7 @@ names.</p>
 <code>timestep_coho_fram</code><a class="anchor" aria-label="anchor" href="#timestep_coho_fram"></a>
 </h3>
 <p>Translating between Coho time-step IDs and human-readable names.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">timestep_coho_fram</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup>
@@ -819,7 +889,7 @@ database has a <code>StockID</code> that does <em>not</em> match the
 <code><a href="../reference/bk_lookup_chin.html">framrosetta::bk_lookup_chin</a></code> maps between the stock ids in
 the BackwardsFRAM table (<code>$bk_stock_id</code>) and the stock ids
 everywhere else (<code>$stock_id</code>).</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">bk_lookupfun_chin</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <colgroup><col width="100%"></colgroup>
