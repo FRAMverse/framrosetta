@@ -11,17 +11,16 @@
 #' stock_search("nooksack", "CHINOOK")
 #' stock_search(21, "CHINOOK")
 fishery_search <- function(pattern, species) {
-  species.vec <- c("CHINOOK", "CHIN", "Chin", "Chinook", "chinook",
-                   "COHO", "Coho", "coho")
-  rlang::arg_match(species, species.vec)
+  species = clean_species(species)
+
   if(!(is.character(pattern) | is.numeric(pattern))){
-    cli::cli_abort("`pattern` must be either a character vector (to search for fishery by name) or a numeric (to search for fishery by ID number).")
+    cli::cli_abort("`pattearn` must be either a character vector (to search for fishery by name) or a numeric (to search for fishery by ID number).")
   }
 
-  if (species %in% c("CHINOOK", "CHIN", "Chin", "Chinook", "chinook")) {
+  if (species == "CHINOOK") {
     lut <- framrosetta::fishery_chinook_fram
   }
-  if (species %in% c("COHO", "Coho", "coho")) {
+  if (species == "COHO") {
     lut <- framrosetta::fishery_coho_fram
   }
   if (is.numeric(pattern)) {
@@ -37,17 +36,16 @@ fishery_search <- function(pattern, species) {
 #' @rdname fishery_search
 #' @export
 stock_search <- function(pattern, species) {
-  species.vec <- c("CHINOOK", "CHIN", "Chin", "Chinook", "chinook",
-                   "COHO", "Coho", "coho")
-  rlang::arg_match(species, species.vec)
+  species = clean_species(species)
+
   if(!(is.character(pattern) | is.numeric(pattern))){
     cli::cli_abort("`pattern` must be either a character vector (to search for stock by name) or a numeric (to search for stock by ID number).")
   }
 
-  if (species %in% c("CHINOOK", "CHIN", "Chin", "Chinook", "chinook")) {
+  if (species == "CHINOOK") {
     lut <- framrosetta::stock_chinook_fram
   }
-  if (species %in% c("COHO", "Coho", "coho")) {
+  if (species == "COHO") {
     lut <- framrosetta::stock_coho_fram
   }
   if (is.numeric(pattern)) {
