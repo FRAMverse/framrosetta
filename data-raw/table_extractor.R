@@ -21,6 +21,15 @@ fishery_chinook_fram <- fetch_table(db, "Fishery") |>
 comment(fishery_chinook_fram) <- c(description = paste0("`fishery_chinook_fram` is a copy of the Fishery table from a Chinook FRAM database (", file.chin, "), and can be used to map fishery ID numbers to fisheries or vice versa. Note that TAMM and FRAM have slightly different fishery ID numbers."))
 timestep_chinook_fram <- fetch_table(db, "TimeStep") |>
   filter(species == "CHINOOK")
+
+## fixing timestep problems
+timestep_chinook_fram <- timestep_chinook_fram |>
+  mutate(across(c(time_step_name, time_step_title), ~gsub("-2", "2", .x))) |>
+  mutate(time_step_title = gsub("([^ ])-", " -", time_step_title)) |>
+  mutate(time_step_title = gsub("-([^ ])", "- ", time_step_title))
+
+
+
 comment(timestep_chinook_fram) <- c(description = paste0("`timestep_chinook_fram` is a copy of the TimeStep table from a Chinook FRAM database (", file.chin, ")."))
 disconnect_fram_db(db)
 
@@ -77,7 +86,7 @@ limiting_stock_coho <- tibble(
     "Snohomish wild",
     "Hood Canal wild",
     "Juan de Fuca wild",
-    "Quileyte Fall wild",
+    "Quileute Fall wild",
     "Hoh wild",
     "Queets wild",
     "Grays Harbor wild",
