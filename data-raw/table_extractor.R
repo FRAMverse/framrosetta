@@ -25,8 +25,8 @@ timestep_chinook_fram <- fetch_table(db, "TimeStep") |>
 ## fixing timestep problems
 timestep_chinook_fram <- timestep_chinook_fram |>
   mutate(across(c(time_step_name, time_step_title), ~gsub("-2", "2", .x))) |>
-  mutate(time_step_title = gsub("([^ ])-", " -", time_step_title)) |>
-  mutate(time_step_title = gsub("-([^ ])", "- ", time_step_title))
+  mutate(time_step_title = gsub("([^ ])-", "\\1 -", time_step_title)) |>
+  mutate(time_step_title = gsub("-([^ ])", "- \\1", time_step_title))
 
 
 
