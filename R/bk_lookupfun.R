@@ -1,4 +1,3 @@
-
 #' Generate Chinook bk_fram look-up table
 #'
 #' At present the FRAM databases use a differents stock_id numbering system in the BackwardsFRAM
